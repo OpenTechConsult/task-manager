@@ -22,5 +22,34 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true}, (error, client) => 
     db.collection('users').insertOne({
         name: 'Sandro',
         age: 39
+    }, (err, result) => {
+        if (err) {
+            return console.log('Unable to insert the user');
+        }
+
+        console.log(result.insertedId);
+    });
+
+
+    db.collection('users').insertMany([
+        { name: 'Deborah', age: 36},
+        { name: 'Yvonne', age: 42},
+    ], (error, results) => {
+        if (error) {
+            return console.log('Unable to insert documents!');
+        }
+        console.log(results.insertedIds);
+    });
+
+    db.collection('tasks').insertMany([
+        {description: 'Task one', completed: true},
+        {description: 'Task two', completed: false},
+        {description: 'Task three', completed: false},
+    ], (error, results) => {
+        if (error) {
+            return console.log('Unable to insert documents');
+        }
+
+        console.log(results.insertedIds);
     });
 });

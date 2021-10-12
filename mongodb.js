@@ -29,4 +29,18 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true}, (error, client) => 
     db.collection('users').find({ age: 39 }).count((err, count) => {
         console.log(count);
     });
+
+    // fetch the last task in tasks collection
+    db.collection('tasks').findOne({ _id: new ObjectID("616227842b6ff803476d2c1e") }, (err, task) => {
+        if (err) {
+            return console.log('Unable to fetch the task');
+        }
+
+        console.log(task);
+    });
+
+    // fetch all the tasks in tasks collection that are incomplete
+    db.collection('tasks').find({ completed: false}).toArray((err, tasks) => {
+        console.log(tasks);
+    })
 });

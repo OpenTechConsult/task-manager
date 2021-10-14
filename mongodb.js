@@ -18,9 +18,10 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true}, (error, client) => 
     // update the field name to 'Ghislaine' where object ID is 616366014142b07d6083856d
     db.collection('users').updateOne({ 
         _id: new ObjectID("616366014142b07d6083856d")
-    }, { 
-        $set: { 
-            name: 'Ghislaine'
+    },
+    { 
+        $inc: { 
+            age: 1
         }
     }).then((result) => {
         console.log(result)

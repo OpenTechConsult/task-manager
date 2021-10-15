@@ -15,17 +15,9 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true}, (error, client) => 
     // create the database and have a reference to it
     const db = client.db(databaseName);
 
-    // update the field name to 'Ghislaine' where object ID is 616366014142b07d6083856d
-    db.collection('users').updateOne({ 
-        _id: new ObjectID("616366014142b07d6083856d")
-    },
-    { 
-        $inc: { 
-            age: 1
-        }
-    }).then((result) => {
-        console.log(result)
-    }).catch((err) => {
-        console.log(err)
-    });
+    // update all incompleted tasks to completed
+    db.collection('tasks').updateMany(
+        { completed: false }, 
+        { $set: { completed: true }}
+    ).then((result) => { console.log(result) }).catch((err) => { console.log(err) });
 });

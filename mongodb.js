@@ -1,23 +1,23 @@
 const { MongoClient, ObjectID } = require('mongodb');
 
 // connection string variables
-const connectionURL = 'mongodb://127.0.0.1:27017';
-const databaseName = 'task-manager';
+const uri = 'mongodb://127.0.0.1:27017';
 
-// connect to the database server
-MongoClient.connect(connectionURL, { useNewUrlParser: true}, (error, client) => {
-    if (error) {
-        return console.log('Unable to connect to the database server');
+
+const client = new MongoClient(uri);
+
+async function run() {
+    try {
+        await client.connect();
+        const database = client.db('task-manager');
+        const users    = database.collection('users');
+
+        // query for all users with 39 years old
+        const query = { age: 39 };
+        const result = await users.deleteMany(query);
+        console.log("Deleted " + result.deletedCount + " documents");
+    } finally {
+        await client.close();
     }
-
-    console.log('Connected successfully to the database server');
-    
-    // create the database and have a reference to it
-    const db = client.db(databaseName);
-
-    // update all incompleted tasks to completed
-    db.collection('tasks').updateMany(
-        { completed: false }, 
-        { $set: { completed: true }}
-    ).then((result) => { console.log(result) }).catch((err) => { console.log(err) });
-});
+}
+run().catch(console.dir);

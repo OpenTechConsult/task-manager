@@ -14,6 +14,17 @@ async function main() {
             required: true,
             trim: true,
         },
+        password: {
+            type: String,
+            required: true,
+            minLength: 6,
+            trim: true,
+            validate(value) {
+                if(value.includes('password')) {
+                    throw new Error('The password must not contain the word password')
+                }
+            }
+        },
         email: {
             type: String,
             required: true,
@@ -54,8 +65,9 @@ async function main() {
 
     // create the object user
     const me = new User({
-        name: '   Joseph  ',
-        email: 'kakala@otr.tg',
+        name: '   Deborah  ',
+        email: 'damegantse@otr.tg',
+        password: '@LoveU',
     })
 
     // create the task object

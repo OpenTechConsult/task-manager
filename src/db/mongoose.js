@@ -56,7 +56,7 @@ async function main() {
         }, 
         completed: {
             type: Boolean,
-            default: true,
+            default: false,
         }
     })
 
@@ -75,7 +75,7 @@ async function main() {
 
     // create the task object
     const myTask = new Task({
-        completed: false
+        description: 'Start validation and sanitization'
     })
 
     // await me.save()

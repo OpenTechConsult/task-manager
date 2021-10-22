@@ -23,7 +23,7 @@ app.post('/tasks', (req, res) => {
     const task = new Task(req.body)
     task.save()
     .then(() => { res.send(task) })
-    .catch((err) => { res.status(400)})
+    .catch((err) => { res.status(400).send(err)})
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))

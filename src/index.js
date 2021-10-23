@@ -1,5 +1,8 @@
 const express = require('express')
+const mongoose = require('mongoose')
 require('./db/mongoose')
+
+
 const User = require('./model/user')
 const Task = require('./model/task')
 
@@ -8,7 +11,34 @@ const port = process.env.PORT || 3000
 
 app.use(express.json())
 
-app.get('/', (req, res) => res.send('Hello World!'))
+
+
+// fetch multiple users route handler
+app.get('/users', (req, res) => {
+    User.find({}).then((users) => {
+        res.send(users)
+    }).catch((err) => {
+        res.status(500).send(err)
+    })
+});
+
+
+app.get('/users/:id', (req, res) => {
+    
+    if (!mongoose.isValidObjectId(req.params.id))
+    {
+        return res.status(500).send('Invalide object ID')
+    }
+
+    User.findById(req.params.id).then((user) => {
+        if (user === null) { 
+            return res.status(404).send()
+        }
+        res.send(user)
+    }).catch((err) => {
+        res.status(500).send(err)
+    })
+})
 
 app.post('/users' , (req , res)=>{
     const user = new User(req.body)

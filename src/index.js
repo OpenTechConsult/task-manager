@@ -11,8 +11,6 @@ const port = process.env.PORT || 3000
 
 app.use(express.json())
 
-
-
 // fetch multiple users route handler
 app.get('/users', (req, res) => {
     User.find({}).then((users) => {
@@ -20,8 +18,7 @@ app.get('/users', (req, res) => {
     }).catch((err) => {
         res.status(500).send(err)
     })
-});
-
+})
 
 app.get('/users/:id', (req, res) => {
     
@@ -54,6 +51,27 @@ app.post('/tasks', (req, res) => {
     task.save()
     .then(() => { res.send(task) })
     .catch((err) => { res.status(400).send(err)})
+})
+
+// fetch multiple tasks route handler
+app.get('/tasks' , (req , res) => {
+    Task.find({}).then(tasks => res.send(tasks)).catch(err => res.status(500).send(err))
+})
+
+// fetch a specific task by _id route handler
+app.get('/tasks/:id', (req, res) => {
+    if (!mongoose.isValidObjectId(req.params.id)) {
+        return res.status(500).send('Invalid object ID')
+    }
+
+    Task.findById(req.params.id).then((task) => {
+        if (task === null) {
+            return res.status(404).send()
+        }
+        res.send(task)
+    }).catch((err) => {
+        res.status(500).send(err)
+    })
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))

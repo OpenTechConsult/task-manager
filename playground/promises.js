@@ -1,7 +1,27 @@
-const myPromise = new Promise((resolve, reject) => {
-    setTimeout(() => {
-        resolve('IO operation running');
-    }, 2000)
-});
+const add = (a, b) => { 
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(a + b)
+        }, 2000)
+    })
+}
 
-myPromise.then(result => console.log(result))
+// add(1, 2).then((sum) => {
+//     console.log(sum);
+//     add(sum, 5).then((sum2) => {
+//         console.log(sum2)
+//     }).catch((err) => {
+//         console.log(err)
+//     })
+// }).catch((e) => {
+//     console.log(e);
+// })
+
+add(1, 1).then((sum) => {
+    console.log(sum)
+    return add(sum, 1)
+}).then((sum2) => {
+    console.log(sum2)
+}).catch((err) => {
+    console.log(err)
+})

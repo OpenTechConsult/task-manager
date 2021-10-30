@@ -144,4 +144,24 @@ app.get('/tasks/:id', async (req, res) => {
 
 });
 
+
+// Goal: Allow for removal of tasks
+// 
+// 1. Setup the endpoint handler
+// 2. Attempt to delete the task by id
+//      - Handle success
+//      - Handle task not found
+//      - Handle error
+// 3. Test your work
+app.delete('/tasks/:id', async (req, res) => {
+    try {
+        const task = await Task.findByIdAndDelete(req.params.id)
+        if (!task) {
+            return res.status(404).send()
+        }
+        res.send(task)
+    } catch (e) {
+        res.status(500).send(e)
+    }
+});
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))

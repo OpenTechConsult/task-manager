@@ -163,5 +163,5 @@ app.delete('/tasks/:id', async (req, res) => {
     } catch (e) {
         res.status(500).send(e)
     }
-});
+})
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))

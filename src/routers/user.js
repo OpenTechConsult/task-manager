@@ -1,43 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose')
-// require('../db/mongoose')
 
+const auth = require('../middleware/auth')
 const User = require('../model/user')
 const router = express.Router();
-
-router.get('/test', (req, res) => {
-    res.send('Router from a new file')
-})
-
-
-// fetch multiple users route handler
-router.get('/users', async (req, res) => {
-    try {
-        const users = await User.find({})
-        res.send(users)
-    } catch (e) {
-        res.status(500).send(e)
-    }
-})
-
-router.get('/users/:id', async (req, res) => {
-
-    const _id = req.params.id
-
-    if (!mongoose.isValidObjectId(_id)){
-        return res.status(500).send('Invalide object ID')
-    }
-
-    try {
-        const user = await User.findById(_id)
-        if (!user) {
-            return res.status(404).send()
-        }
-        res.send(user)
-    } catch (e) {
-        res.status(500).send(e)
-    }
-})
 
 router.post('/users' , async (req , res)=>{
     const user = new User(req.body)
@@ -57,6 +23,58 @@ router.post('/users/login', async (req , res) => {
         res.send({ user, token })
     } catch (e) {
         res.status(400).send()
+    }
+})
+
+router.post('/users/logout', auth, async (req, res) => {
+    try {
+        req.user.tokens = req.user.tokens.filter((token) => { return token.token !== req.token})
+        await req.user.save()
+        res.send()
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
+router.post('/users/logoutAll', auth, async (req, res) => {
+    try {
+        req.user.tokens = []
+        await req.user.save()
+        res.send()
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
+router.get('/users', auth, async (req, res) => {
+    try {
+        const users = await User.find({})
+        res.send(users)
+    } catch (e) {
+        res.status(500).send(e)
+    }
+})
+
+router.get('/users/me', auth, async (req, res) => {
+    res.send(req.user)
+});
+
+router.get('/users/:id', async (req, res) => {
+
+    const _id = req.params.id
+
+    if (!mongoose.isValidObjectId(_id)){
+        return res.status(500).send('Invalide object ID')
+    }
+
+    try {
+        const user = await User.findById(_id)
+        if (!user) {
+            return res.status(404).send()
+        }
+        res.send(user)
+    } catch (e) {
+        res.status(500).send(e)
     }
 })
 

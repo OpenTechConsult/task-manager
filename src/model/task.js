@@ -19,6 +19,8 @@ const taskSchema = new Schema({
         required: true,
         ref: 'User'
     }
+}, {
+    timestamps: true,
 })
 
 //Create a task model

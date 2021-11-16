@@ -13,9 +13,15 @@ const taskSchema = new Schema({
     completed: {
         type: Boolean,
         default: false,
+    },
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User'
     }
+}, {
+    timestamps: true,
 })
-
 
 //Create a task model
 const Task = model('Task', taskSchema)

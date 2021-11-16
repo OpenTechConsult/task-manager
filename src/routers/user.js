@@ -2,18 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose')
 const multer = require('multer');
 
-const upload = multer({
-    dest: 'avatars',
-    limits: {
-        fileSize: 1000000,
-    }, 
-    fileFilter(req, file, cb) {
-        if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
-            return cb(new Error('Please upload an image'))
-        }
-        cb(undefined, true)
-    }
-})
+
 const auth = require('../middleware/auth')
 const User = require('../model/user')
 const router = express.Router();
@@ -73,11 +62,7 @@ router.get('/users/me', auth, async (req, res) => {
     res.send(req.user)
 });
 
-// TODO: Refactor the update profile route
-// 1: Update the url to users/me
-// 2: Add authentication middleware into the mix
-// 3: Use the existing user document instead of fetching by param id
-// 4: Test the work in postman
+
 router.patch('/users/me', auth, async (req, res) => {
     
     const updates = Object.keys(req.body)
@@ -106,17 +91,23 @@ router.delete('/users/me', auth, async (req, res) => {
     }
 })
 
-//
-// Goal: Setup endpoint for avatar upload
-// 
-// 1. Add POST /users/me/avatar to user router
-// 2. Setup multer to store uploads in an avatars directory
-// 3. Choose name "avatar" for the key when registering the middleware
-// 4. Send back a 200 response from route handler
-router.post('/users/me/avatar', upload.single('avatar'), (req, res) => {
-    res.send();
+const upload = multer({
+    dest: 'avatars',
+    limits: {
+        fileSize: 1000000,
+    }, 
+    fileFilter(req, file, cb) {
+        if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+            return cb(new Error('Please upload an image'))
+        }
+        cb(undefined, true)
+    }
 })
 
-
+router.post('/users/me/avatar', upload.single('avatar'), (req, res) => {
+    res.send();
+}, (error, req, res, next) => {
+    res.status(400).send({error: error.message})
+})
 
 module.exports = router

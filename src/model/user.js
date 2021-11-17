@@ -45,6 +45,9 @@ const userSchema = new Schema({
             }
         }
     },
+    avatar: {
+        type: Buffer
+    },
     tokens: [{
         token: {
             type: String,

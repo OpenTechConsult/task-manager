@@ -110,11 +110,6 @@ router.post('/users/me/avatar',auth, upload.single('avatar'), async (req, res) =
     res.status(400).send({error: error.message})
 })
 
-// TODO: Setup route to delete avatar
-// 1. Setup DELETE /users/me/avatar
-// 2. Add authentication
-// 3. Set the field to undefined ans save the user and sending back a 200
-// 4. Test the work by creating a new request for task app in postman
 router.delete('/users/me/avatar', auth, async (req, res) => {
     try {
         req.user.avatar = undefined

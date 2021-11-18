@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/OpenTechConsult/task-manager#readme",
   "dependencies": {
+    "@sendgrid/mail": "^7.6.0",
     "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
     "jslint": "^0.12.1",

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
 
-const uri = 'mongodb://127.0.0.1:27017/task-manager-api'
+const uri = process.env.MONGODB_URL
+console.log(uri)
 mongoose.connect(uri)

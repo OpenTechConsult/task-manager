@@ -64,14 +64,6 @@ test('should not get profile for unauthenticated user', async () => {
         .expect(401)
 })
 
-// Challenge goal: Test delete account
-// 
-// 1. Create "should delete account for user"
-//      - Setup auth header and expect correct status code
-// 2. Create "Should not delete account for unauthenticated user"
-//      - Expect correct status code
-// 3. Test your work
-
 test('should delete account for user', async () => {
     await request(app)
         .delete('/users/me')

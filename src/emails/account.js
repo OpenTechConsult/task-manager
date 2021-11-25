@@ -2,7 +2,7 @@ const sgMail = require('@sendgrid/mail')
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
-const sendWelcomeEmail = (email, name) => {
+const sendWelcomeEmail = async (email, name) => {
     const msg = {
         to: email, // Change to your recipient
         from: 'opentech.consult@gmail.com', // Change to your verified sender
